@@ -1,5 +1,6 @@
 import CustomerAddressChangedEvent from "../customer/customer-address-changed";
 import CustomerCreatedEvent from "../customer/customer-created.event";
+import SendConsoleLogWhenCustomerAddresIsChangedHandler from "../customer/handlers/send-console-log-when-customer-address-is-changed.handler";
 import SendConsole1LogWhenCustomerIsCreatedHandler from "../customer/handlers/send-console-log1-when-customer-is-created.handler";
 import EnviaConsoleLog1Handler from "../customer/handlers/send-console-log1-when-customer-is-created.handler";
 import SendConsole2LogWhenCustomerIsCreatedHandler from "../customer/handlers/send-console-log2-when-customer-is-created.handler";
@@ -103,7 +104,7 @@ describe("Domain events tests", () => {
   it("should notify when customer address is changed", () => {
     const eventDispatcher = new EventDispatcher();
 
-    const eventHandler = new SendConsole1LogWhenCustomerIsCreatedHandler();
+    const eventHandler = new SendConsoleLogWhenCustomerAddresIsChangedHandler();
 
     const spyEventHandler = jest.spyOn(eventHandler, "handle");
 
