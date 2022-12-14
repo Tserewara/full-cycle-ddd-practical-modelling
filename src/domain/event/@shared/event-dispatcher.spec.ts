@@ -1,3 +1,4 @@
+import CustomerAddressChangedEvent from "../customer/customer-address-changed";
 import CustomerCreatedEvent from "../customer/customer-created.event";
 import SendConsole1LogWhenCustomerIsCreatedHandler from "../customer/handlers/send-console-log1-when-customer-is-created.handler";
 import EnviaConsoleLog1Handler from "../customer/handlers/send-console-log1-when-customer-is-created.handler";
@@ -97,5 +98,30 @@ describe("Domain events tests", () => {
 
     expect(spyEventHandler1).toHaveBeenCalled();
     expect(spyEventHandler2).toHaveBeenCalled();
-  })
+  });
+
+  it("should notify when customer address is changed", () => {
+    const eventDispatcher = new EventDispatcher();
+
+    const eventHandler = new SendConsole1LogWhenCustomerIsCreatedHandler();
+
+    const spyEventHandler = jest.spyOn(eventHandler, "handle");
+
+    eventDispatcher.register("CustomerAddressChangedEvent", eventHandler);
+
+    expect(eventDispatcher.getEventHandlers['CustomerAddressChangedEvent'][0])
+      .toBe(eventHandler);
+
+    const eventData = {
+      id: "123",
+      name: "John Doe",
+      address: "Some random address, n 8",
+    }
+    const customerAddressChangedEvent = new CustomerAddressChangedEvent(eventData);
+
+    eventDispatcher.notify(customerAddressChangedEvent)
+
+    expect(spyEventHandler).toHaveBeenCalled();
+    expect(spyEventHandler).toHaveBeenCalledWith(customerAddressChangedEvent);
+  });
 })
